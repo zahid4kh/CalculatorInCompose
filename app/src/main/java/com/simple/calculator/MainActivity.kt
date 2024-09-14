@@ -50,14 +50,6 @@ fun App(){
     var num2 by remember { mutableStateOf("") }
     var result by remember {mutableStateOf ("")}
 
-    var digitClicked by remember { mutableStateOf(false) }
-    var plusClicked by remember { mutableStateOf(false) }
-    var minusClicked by remember { mutableStateOf(false) }
-    var timesClicked by remember { mutableStateOf(false) }
-    var divClicked by remember { mutableStateOf(false) }
-    var clearClicked by remember { mutableStateOf(false) }
-    var equalsClicked by remember { mutableStateOf(false) }
-
     var isInputtingNum1 by remember { mutableStateOf(true) }
     var currentOperator by remember {mutableStateOf<String?>(null)}
 
@@ -74,30 +66,68 @@ fun App(){
             readOnly = true,
             modifier=Modifier.fillMaxWidth())
 
+
         fun onDigitClicked(digit:String){
-            if (result == ""){
+            if (isInputtingNum1){
                 num1 += digit
+                result = num1
             }else{
                 num2 += digit
+                result = num1 + currentOperator + num2
             }
         }
+        fun onEqualsClicked(){
+            if (currentOperator != null && num2.isNotEmpty()){
+                when (currentOperator){
+                    "+" -> result = (num1.toDouble() + num2.toDouble()).toString()
+                    "-" -> result = (num1.toDouble() - num2.toDouble()).toString()
+                    "*" -> result = (num1.toDouble() * num2.toDouble()).toString()
+                    "/" -> result = if (num2 !="0") (num1.toDouble() / num2.toDouble()).toString() else "Error"
+                }
+            }
+            num1 = ""
+            num2 = ""
+            currentOperator = null
+            isInputtingNum1 = true
+        }
 
-        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(top=15.dp),
+        fun onClearClicked(){
+            result = ""
+            num1 = ""
+            num2 = ""
+            currentOperator = null
+        }
+
+        fun onOperatorClicked(operator: String){
+            if (num1.isNotEmpty() && num2.isEmpty()){
+                currentOperator = operator
+                result = num1 + operator
+                isInputtingNum1 = false
+            } else if (num1.isNotEmpty() && num2.isNotEmpty()){
+                onEqualsClicked()
+                currentOperator = operator
+                result = num1 + operator
+                isInputtingNum1 = false
+            }
+
+        }
+
+        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(top = 15.dp),
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically){
-            Button(onClick = { clearClicked = !clearClicked}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onClearClicked(); isInputtingNum1 = true}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "C", fontSize = fontSize)
             }
             Button(onClick = {onDigitClicked("9")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "9", fontSize = fontSize)
             }
-            Button(onClick = {equalsClicked = !equalsClicked}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onEqualsClicked(); isInputtingNum1 = true}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "=", fontSize = fontSize)
             }
-            Button(onClick = {currentOperator = "/"; isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onOperatorClicked("/"); isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "/", fontSize = fontSize)
             }
         }
-        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(top=10.dp),
+        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(top = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically){
             Button(onClick = {onDigitClicked("6")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "6", fontSize = fontSize)
@@ -108,11 +138,11 @@ fun App(){
             Button(onClick = {onDigitClicked("8")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "8", fontSize = fontSize)
             }
-            Button(onClick = {currentOperator = "-"; isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onOperatorClicked("-"); isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "-", fontSize = fontSize)
             }
         }
-        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(bottom=10.dp, top=10.dp),
+        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(bottom = 10.dp, top = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically){
             Button(onClick = {onDigitClicked("3")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "3", fontSize = fontSize)
@@ -123,11 +153,11 @@ fun App(){
             Button(onClick = {onDigitClicked("5")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "5", fontSize = fontSize)
             }
-            Button(onClick = {currentOperator = "*"; isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onOperatorClicked("*"); isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "*", fontSize = fontSize)
             }
         }
-        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(bottom=10.dp),
+        Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(bottom = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically){
             Button(onClick = {onDigitClicked("0")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "0", fontSize = fontSize)
@@ -138,7 +168,7 @@ fun App(){
             Button(onClick = {onDigitClicked("2")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "2", fontSize = fontSize)
             }
-            Button(onClick = {currentOperator = "+"; isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
+            Button(onClick = {onOperatorClicked("+"); isInputtingNum1 = false}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "+", fontSize = fontSize)
             }
         }
