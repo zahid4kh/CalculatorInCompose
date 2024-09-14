@@ -90,14 +90,12 @@ fun App(){
             currentOperator = null
             isInputtingNum1 = true
         }
-
         fun onClearClicked(){
             result = ""
             num1 = ""
             num2 = ""
             currentOperator = null
         }
-
         fun onOperatorClicked(operator: String){
             if (num1.isNotEmpty() && num2.isEmpty()){
                 currentOperator = operator
