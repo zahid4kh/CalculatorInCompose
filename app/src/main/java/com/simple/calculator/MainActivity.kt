@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simple.calculator.ui.theme.CalculatorSimpleTheme
+import com.simple.calculator.ui.theme.displayFontFamily
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +114,7 @@ fun App(){
         Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth().padding(top = 15.dp),
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically){
             Button(onClick = {onClearClicked(); isInputtingNum1 = true}, shape = MaterialTheme.shapes.extraLarge) {
-                Text(text = "C", fontSize = fontSize)
+                Text(text = "C", fontSize = fontSize, fontFamily = displayFontFamily)
             }
             Button(onClick = {onDigitClicked("9")}, shape = MaterialTheme.shapes.extraLarge) {
                 Text(text = "9", fontSize = fontSize)
