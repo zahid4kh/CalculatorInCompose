@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.simple.calculator"
+    namespace = "com.my.qalqulator"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.simple.calculator"
+        applicationId = "com.my.qalqulator"
         minSdk = 21
         targetSdk = 34
         versionCode = 1

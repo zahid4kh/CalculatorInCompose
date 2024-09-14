@@ -54,9 +54,7 @@ fun App(){
     var isInputtingNum1 by remember { mutableStateOf(true) }
     var currentOperator by remember {mutableStateOf<String?>(null)}
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background),
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally){
 
